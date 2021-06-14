@@ -1,0 +1,13 @@
+{
+    http_port {$PORT}
+	auto_https off
+}
+
+:{$PORT}
+
+bind 0.0.0.0
+rewrite / /index.html
+uri path_regexp ^/ /{$STORAGE_BUCKET_NAME}/
+reverse_proxy http://storage.googleapis.com:80 {
+    header_up Host storage.googleapis.com
+}
